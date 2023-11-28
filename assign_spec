@@ -1,0 +1,19 @@
+
+
+Database -
+    Employee Table
+    Clock in out times per day (1 week/push time)
+
+admin user ie HR (add users, adjust pay, adjust clock in manually)
+
+log in system|(userID, Pass)
+
+Requirements - Add users if admin
+    users can clock in out
+    users can see own, but nobody elses hours,
+    admin can see all
+    admin can manually adjusts
+    admin can see all employees, pay, details etc.
+    manager see all
+    admin can adjust
+    
