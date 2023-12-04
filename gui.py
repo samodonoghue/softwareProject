@@ -53,4 +53,7 @@ btn9 = Button(root, text="9",command= lambda: addToUserBox(9), width=10)
 btn9.grid(row=4, column=2, sticky=W+E)
 btn0 = Button(root, text="0",command= lambda: addToUserBox(0), width=10)
 btn0.grid(row=5, column=1, sticky=W+E)
+btn_submit = Button(root, text="Submit", width=10)
+btn_submit.grid(row=7, column=1, sticky=W+E)
 root.mainloop()
+
