@@ -74,7 +74,6 @@ class Manager(Employee):
         print("Edit User Hours Selected")
         employeeID=input("Input EmployeeID:")
         newHours=input("Input added hours:")
-        print(employeeID)
         c.execute("SELECT HoursWorked FROM employees WHERE UserID=?",(employeeID,))
         
         currentHours=c.fetchone()[0]
@@ -87,14 +86,19 @@ class Manager(Employee):
         
 
     def insertNewUser(self):
-        print("insert new user")
+        print("Insert new user selected")
+        employeeID=input("input new employee ID:")
+        name=input("input employee name:")
+        pay=input("Input employees pay:")
+        globals()[name] = Employee(employeeID,name,"Staff")
+        c.execute("INSERT INTO employees VALUES (?,?,?,?)",(employeeID,name,pay,0))
 
 
 base_manager = Manager("0000","BaseManager")
 bryan = Manager("4321","Bryan")
 
 
-sam = Employee("1234", "Sam", "Staff")
+# sam = Employee("1234", "Sam", "Staff")
 # sam.clock_in()
 # sam.clock_out()
 
@@ -121,8 +125,12 @@ def login():
                 print(c.fetchall())
             elif manager_input=="3":
                 employee.insertNewUser()
+                c.execute("SELECT * FROM employees")
+                print(c.fetchall())
+
             else:
                 print("NOT AN OPTION")
+            
 
         else:
             clock_in_input = input("1 - Clock in\n2 - Clock out\n")
@@ -134,9 +142,15 @@ def login():
             else:
                 print("NOT AN OPTION")
     
+    
         
     else:
         print(f"Employee with ID {input_id} not found.")
+    Exit=input("Press X to exit or any key to continue:")
+    if (Exit=="X"):
+        exit()
+
+    login()
 
 
 login()
