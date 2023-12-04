@@ -33,6 +33,14 @@ class Employee:
 
     def get_clock_out_time(self):
         return self.clock_out_time
+    
+    def viewUserDetails(self):
+        c.execute("SELECT HoursWorked FROM employees WHERE UserID=?",(self._id,))
+        currentHours=c.fetchone()[0]
+        c.execute("SELECT Pay FROM employees WHERE UserID=?",(self._id,))
+        pay=c.fetchone()[0]
+
+        return currentHours,pay
 
 class Manager(Employee):
     def __init__(self, emp_id, name):
@@ -81,10 +89,6 @@ class Manager(Employee):
         newHours=float(newHours)+float(currentHours)
         editUserHours(employeeID,float(newHours))
         
-
-
-        
-
     def insertNewUser(self):
         print("Insert new user selected")
         employeeID=input("input new employee ID:")
@@ -92,6 +96,8 @@ class Manager(Employee):
         pay=input("Input employees pay:")
         globals()[name] = Employee(employeeID,name,"Staff")
         c.execute("INSERT INTO employees VALUES (?,?,?,?)",(employeeID,name,pay,0))
+
+    
 
 
 base_manager = Manager("0000","BaseManager")
@@ -133,12 +139,22 @@ def login():
             
 
         else:
-            clock_in_input = input("1 - Clock in\n2 - Clock out\n")
+            employee_input = input("1 - Clock in or out\n2 - View pay and hours\n")
+            if employee_input == "1":
+                clock_in_input = input("1 - Clock in\n2 - Clock out\n")
 
-            if clock_in_input == "1":
-                employee.clock_in()
-            elif clock_in_input == "2":
-                employee.clock_out()
+                if clock_in_input == "1":
+                    employee.clock_in()
+                elif clock_in_input == "2":
+                    employee.clock_out()
+                else:
+                    print("NOT AN OPTION")
+            elif employee_input == "2":
+                currentHours,pay=employee.viewUserDetails()
+                earned=pay*currentHours
+                print(employee.name+"\nHours worked:"+str(currentHours)+"\nPay:"+str(pay)+"\nEarned:"+str(earned))
+                # print(currentHours)
+                # print(pay)
             else:
                 print("NOT AN OPTION")
     
