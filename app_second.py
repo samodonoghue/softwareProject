@@ -9,21 +9,42 @@ class Employee:
         self.name = name
         self._id = emp_id
         self.role = role
+        self.clocked_in = False
         self.clock_in_time = None
+        self.clocktime = None 
+        # additional clocktime and clockedtime not necessary
         self.clock_out_time = None
+        self.clockedtime = None
         self._registry.append(self)
 
     def clock_in(self):
-        now = datetime.now()
-        current_time = now.strftime("%H:%M:%S")
-        print("Thanks",self.name, "\nClock in Time:", current_time)
-        self.clock_in_time = current_time
+        if self.clocked_in == False:
+            now = datetime.now()
+            current_time = now.strftime("%H:%M:%S")
+            print("Thanks",self.name, "\nClock in Time:", current_time)
+            self.clock_in_time = current_time
+            self.clocktime=now
+            self.clocked_in = True
+
+        else:
+            print("You're already Clocked in")
 
     def clock_out(self):
-        now = datetime.now()
-        current_time = now.strftime("%H:%M:%S")
-        print("Thanks", self.name, "\nClock Out Time: ", current_time)
-        self.clock_out_time = current_time
+        if self.clocked_in == True:
+            now = datetime.now()
+            current_time = now.strftime("%H:%M:%S")
+            print("Thanks", self.name, "\nClock Out Time: ", current_time)
+            self.clock_out_time = current_time
+            self.clockedtime = now
+            self.clocked_in = False
+            c.execute("SELECT HoursWorked FROM employees WHERE UserID=?",(self._id,))
+            currentHours=float(c.fetchone()[0])
+            currentHours+=float(self.clockedtime.timestamp())-(self.clocktime.timestamp())
+            
+            editUserHours(self._id,(currentHours)/60)
+            
+        else:
+            print("You were not Clocked in")
 
     def get_role(self):
         return self.role
@@ -153,8 +174,7 @@ def login():
                 currentHours,pay=employee.viewUserDetails()
                 earned=pay*currentHours
                 print(employee.name+"\nHours worked:"+str(currentHours)+"\nPay:"+str(pay)+"\nEarned:"+str(earned))
-                # print(currentHours)
-                # print(pay)
+                
             else:
                 print("NOT AN OPTION")
     
