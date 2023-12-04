@@ -1,0 +1,7 @@
+CREATE TABLE Employee (
+    UserID INTEGER PRIMARY KEY,
+    Name TEXT NOT NULL,
+    Pay REAL NOT NULL,
+    HoursWorked REAL NOT NULL
+);
+
