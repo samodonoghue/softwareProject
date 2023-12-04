@@ -1,5 +1,5 @@
 from datetime import datetime
-from database import editUserHours,editUserPay,insertUser
+from database import *
 
 
 class Employee:
@@ -64,13 +64,34 @@ class Manager(Employee):
                 return employee
         return None
     
-    def editPay():
-        print("edit pay")
+    def editPay(self):
+        print("Edit User Pay Selected")
+        employeeID=input("Input EmployeeID:")
+        newPay=input("Input new pay:")
+        editUserPay(int(employeeID),float(newPay))
     
-    def editHours():
-        print("edit hours")
+    def editHours(self):
+        print("Edit User Hours Selected")
+        employeeID=input("Input EmployeeID:")
+        newHours=input("Input added hours:")
+        print(employeeID)
+        employee=self.get_employee_by_id(employeeID)
+        print(employee.name)
+        employee_ID=int(employee._id)
+        
+        c.execute("SELECT HoursWorked FROM employees WHERE UserID=?",(employee_ID,))
+        # c.execute("SELECT HoursWorked FROM employees WHERE UserID=1234")
+        # c.execute("INSERT INTO employees VALUES (?,?,?,?)",(1234,"Sam",14,0))
+        currentHours=c.fetchone()[0]
+        
+        newHours=float(newHours)+float(currentHours)
+        editUserHours(employeeID,float(newHours))
+        
 
-    def insertNewUser():
+
+        
+
+    def insertNewUser(self):
         print("insert new user")
 
 
@@ -96,11 +117,15 @@ def login():
             print("Welcome manager "+employee.name)
             manager_input = input("1-Edit User Pay\n2-Edit User Hours\n3-Insert New User\n")
             if manager_input =="1":
-                Manager.editPay()
+                employee.editPay()
+                c.execute("SELECT * FROM employees")
+                print(c.fetchall())
             elif manager_input=="2":
-                Manager.editHours()
+                employee.editHours()
+                c.execute("SELECT * FROM employees")
+                print(c.fetchall())
             elif manager_input=="3":
-                Manager.insertNewUser()
+                employee.insertNewUser()
             else:
                 print("NOT AN OPTION")
 
