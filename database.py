@@ -1,18 +1,20 @@
-from flask import g 
-import os
+
 import sqlite3
 
-DATABASE = os.path.join(os.path.abspath(os.path.dirname(__file__)), "app.db")
+conn = sqlite3.connect('employee.db')
 
-def get_db():
-    if "db" not in g:
-        g.db = sqlite3.connect(DATABASE,
-            detect_types=sqlite3.PARSE_DECLTYPES
-        )
-        g.db.row_factory = sqlite3.Row
-    return g.db
+c = conn.cursor()
+c.execute("""DROP TABLE IF EXISTS employees """)
+c.execute("""CREATE TABLE employees (
+    first text,
+    last text,
+    pay integer
 
-def close_db(e=None):
-    db = g.pop("db", None)
-    if db is not None:
-        db.close()
+)""")
+
+
+c.execute("INSERT INTO employees VALUES (?,?,?)", ("Sam", "ODonoghue", 14))
+conn.commit()
+
+c.execute("SELECT * FROM employees")
+print(c.fetchall())
