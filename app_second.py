@@ -75,13 +75,8 @@ class Manager(Employee):
         employeeID=input("Input EmployeeID:")
         newHours=input("Input added hours:")
         print(employeeID)
-        employee=self.get_employee_by_id(employeeID)
-        print(employee.name)
-        employee_ID=int(employee._id)
+        c.execute("SELECT HoursWorked FROM employees WHERE UserID=?",(employeeID,))
         
-        c.execute("SELECT HoursWorked FROM employees WHERE UserID=?",(employee_ID,))
-        # c.execute("SELECT HoursWorked FROM employees WHERE UserID=1234")
-        # c.execute("INSERT INTO employees VALUES (?,?,?,?)",(1234,"Sam",14,0))
         currentHours=c.fetchone()[0]
         
         newHours=float(newHours)+float(currentHours)
