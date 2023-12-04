@@ -1,4 +1,6 @@
 from datetime import datetime
+from database import editUserHours,editUserPay,insertUser
+
 
 class Employee:
     _registry = []
@@ -55,15 +57,22 @@ class Manager(Employee):
             if employee._id == emp_id:
                 return employee.name
         return f"Employee with ID {emp_id} not found."
-    def checkManager():
-
-        return None
-        
+         
     def get_employee_by_id(self, emp_id):
         for employee in self.employees:
             if employee._id == emp_id:
                 return employee
         return None
+    
+    def editPay():
+        print("edit pay")
+    
+    def editHours():
+        print("edit hours")
+
+    def insertNewUser():
+        print("insert new user")
+
 
 base_manager = Manager("0000","BaseManager")
 bryan = Manager("4321","Bryan")
@@ -85,6 +94,15 @@ def login():
         if employee.role == "Manager":
 
             print("Welcome manager "+employee.name)
+            manager_input = input("1-Edit User Pay\n2-Edit User Hours\n3-Insert New User\n")
+            if manager_input =="1":
+                Manager.editPay()
+            elif manager_input=="2":
+                Manager.editHours()
+            elif manager_input=="3":
+                Manager.insertNewUser()
+            else:
+                print("NOT AN OPTION")
 
         else:
             clock_in_input = input("1 - Clock in\n2 - Clock out\n")
