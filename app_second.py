@@ -115,6 +115,7 @@ class Manager(Employee):
         employeeID=input("input new employee ID:")
         c.execute("SELECT HoursWorked FROM employees WHERE UserID=?",(employeeID,))
         employeeID_check = currentHours=c.fetchone()
+
         if employeeID_check:
             print("EMPLOYEE ID IS TAKEN")
         else:
