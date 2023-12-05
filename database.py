@@ -30,10 +30,10 @@ def editUserPay(employeeID,newPay):
 def editUserHours(employeeID,newHours):
     c.execute("UPDATE employees  SET hoursWorked = ? WHERE UserID =?",(newHours,employeeID))
     
-c.execute("INSERT INTO employees VALUES (?,?,?,?)",(1234,"Sam",14,0))
-editUserPay(1234,15)
-editUserHours(1234,2.5)
+# c.execute("INSERT INTO employees VALUES (?,?,?,?)",(1234,"Sam",14,0))
+# editUserPay(1234,15)
+# editUserHours(1234,2.5)
 
 
-c.execute("SELECT * FROM employees")
-print(c.fetchall())
+# c.execute("SELECT * FROM employees")
+# print(c.fetchall())
