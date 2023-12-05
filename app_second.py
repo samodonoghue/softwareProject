@@ -5,7 +5,7 @@ from database import *
 class Employee:
     _registry = []
 
-    def __init__(self, emp_id, name, role):
+    def __init__(self, emp_id, name, role,manual=False,pay=10):
         self.name = name
         self._id = emp_id
         self.role = role
@@ -16,6 +16,16 @@ class Employee:
         self.clock_out_time = None
         self.clockedtime = None
         self._registry.append(self)
+        
+        if manual:
+            c.execute("SELECT HoursWorked FROM employees WHERE UserID=?",(emp_id,))
+            employeeID_check = currentHours=c.fetchone()
+            if employeeID_check:
+                print("-"*10)
+                print("EMPLOYEE ID IS TAKEN")
+                print("-"*10)
+            else:
+                c.execute("INSERT INTO employees VALUES (?,?,?,?)",(self._id,self.name,pay,0))
 
     def clock_in(self):
         if self.clocked_in == False:
@@ -235,5 +245,6 @@ def login():
 
     login()
 
+if __name__ == '__main__':
 
-login()
+    login()
