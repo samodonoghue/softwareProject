@@ -179,9 +179,9 @@ base_manager = Manager("0000","BaseManager")
 bryan = Manager("4321","Bryan")
 
 
-# sam = Employee("1234", "Sam", "Staff")
-# sam.clock_in()
-# sam.clock_out()
+sam = Employee("1234", "Sam", "Staff")
+sam.clock_in()
+sam.clock_out()
 
 bryan.view_all_employees()
 
@@ -245,7 +245,7 @@ def login():
         
     else:
         print(f"Employee with ID {input_id} not found.")
-    Exit=input("Press X to exit or any key to continue:")
+    Exit=input("Press X to exit or any key to continue:").capitalize()
     if (Exit=="X"):
         exit()
 
