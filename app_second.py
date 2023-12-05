@@ -84,6 +84,16 @@ class Manager(Employee):
                   "\nClock out Time:", employee.get_clock_out_time())
             print("-" * 10)
 
+    def checkEmployee(self,emp_id):
+        employee = base_manager.get_employee_by_id(emp_id)
+        if employee:
+            return True
+        else:
+                print("-"*10)
+                print("Employee not found - Please try again")
+                print("-"*10)
+
+
     def get_employee_name_by_id(self, emp_id):
         for employee in self.employees:
             if employee._id == emp_id:
@@ -97,21 +107,38 @@ class Manager(Employee):
         return None
     
     def editPay(self):
-        print("Edit User Pay Selected")
-        employeeID=input("Input EmployeeID:")
-        newPay=input("Input new pay:")
-        editUserPay(int(employeeID),float(newPay))
+        try:
+            print("Edit User Pay Selected")
+            employeeID=input("Input EmployeeID:")
+            
+            if base_manager.checkEmployee(employeeID):
+                newPay=input("Input new pay:")
+                editUserPay(int(employeeID),float(newPay))
+            
+        except ValueError:
+            print("-"*10)
+            print("there was an error - Please try again")
+            print("-"*10)
+    
     
     def editHours(self):
         print("Edit User Hours Selected")
         employeeID=input("Input EmployeeID:")
-        newHours=input("Input added hours:")
-        c.execute("SELECT HoursWorked FROM employees WHERE UserID=?",(employeeID,))
+        try:
+            if base_manager.checkEmployee(employeeID):
+                newHours=input("Input added hours:")
+                c.execute("SELECT HoursWorked FROM employees WHERE UserID=?",(employeeID,))
+                
+                currentHours=c.fetchone()[0]
+                
+                newHours=float(newHours)+float(currentHours)
+                editUserHours(employeeID,float(newHours))
+        except ValueError:
+            print("-"*10)
+            print("there was an error - Please try again")
+            print("-"*10)
+
         
-        currentHours=c.fetchone()[0]
-        
-        newHours=float(newHours)+float(currentHours)
-        editUserHours(employeeID,float(newHours))
         
     def insertNewUser(self):
         print("Insert new user selected")
@@ -120,7 +147,9 @@ class Manager(Employee):
         employeeID_check = currentHours=c.fetchone()
 
         if employeeID_check:
+            print("-"*10)
             print("EMPLOYEE ID IS TAKEN")
+            print("-"*10)
         else:
             name=input("input employee name:")
             pay=input("Input employees pay:")
