@@ -23,7 +23,7 @@ class Employee:
             current_time = now.strftime("%H:%M:%S")
             print("Thanks",self.name, "\nClock in Time:", current_time)
             self.clock_in_time = current_time
-            self.clocktime=now
+            self.clocktime=now.timestamp()
             self.clocked_in = True
 
         else:
@@ -35,11 +35,11 @@ class Employee:
             current_time = now.strftime("%H:%M:%S")
             print("Thanks", self.name, "\nClock Out Time: ", current_time)
             self.clock_out_time = current_time
-            self.clockedtime = now
+            self.clockedtime = now.timestamp()
             self.clocked_in = False
             c.execute("SELECT HoursWorked FROM employees WHERE UserID=?",(self._id,))
             currentHours=float(c.fetchone()[0])
-            currentHours+=float(self.clockedtime.timestamp())-(self.clocktime.timestamp())
+            currentHours+=float(self.clockedtime)-(self.clocktime)
             
             editUserHours(self._id,(currentHours)/60)
             
@@ -113,10 +113,15 @@ class Manager(Employee):
     def insertNewUser(self):
         print("Insert new user selected")
         employeeID=input("input new employee ID:")
-        name=input("input employee name:")
-        pay=input("Input employees pay:")
-        globals()[name] = Employee(employeeID,name,"Staff")
-        c.execute("INSERT INTO employees VALUES (?,?,?,?)",(employeeID,name,pay,0))
+        c.execute("SELECT HoursWorked FROM employees WHERE UserID=?",(employeeID,))
+        employeeID_check = currentHours=c.fetchone()
+        if employeeID_check:
+            print("EMPLOYEE ID IS TAKEN")
+        else:
+            name=input("input employee name:")
+            pay=input("Input employees pay:")
+            globals()[name] = Employee(employeeID,name,"Staff")
+            c.execute("INSERT INTO employees VALUES (?,?,?,?)",(employeeID,name,pay,0))
 
     
 
@@ -139,9 +144,11 @@ def login():
 
     if employee:
         if employee.role == "Manager":
-
+            print("-" * 10)
             print("Welcome manager "+employee.name)
-            manager_input = input("1-Edit User Pay\n2-Edit User Hours\n3-Insert New User\n")
+            print("-" * 10)
+            manager_input = input("1-Edit User Pay\n2-Edit User Hours\n3-Insert New User\n4-View employee details\nOr press X to exit\n")
+            print("-" * 10)
             if manager_input =="1":
                 employee.editPay()
                 c.execute("SELECT * FROM employees")
@@ -154,12 +161,19 @@ def login():
                 employee.insertNewUser()
                 c.execute("SELECT * FROM employees")
                 print(c.fetchall())
+            elif manager_input=="4":
+                employee.view_all_employees()
+            elif manager_input=="X":
+                login()
 
             else:
                 print("NOT AN OPTION")
             
 
         else:
+            print("-" * 10)
+            print("Welcome "+employee.name)
+            print("-" * 10)
             employee_input = input("1 - Clock in or out\n2 - View pay and hours\n")
             if employee_input == "1":
                 clock_in_input = input("1 - Clock in\n2 - Clock out\n")
