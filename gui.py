@@ -1,5 +1,5 @@
 from tkinter import *
-
+import app_second
 
 
 # label.pack()
@@ -11,6 +11,10 @@ def addToUserBox(symbol):
     text_result.delete(1.0, 'end')
     text_result.insert(1.0, userID)
 
+
+def retrieve_input():
+    input = text_result.get("1.0",'end-1c')
+    app_second.login(input)
 
 
 
@@ -53,9 +57,13 @@ btn9 = Button(root, text="9",command= lambda: addToUserBox(9), width=10)
 btn9.grid(row=4, column=2, sticky=W+E)
 btn0 = Button(root, text="0",command= lambda: addToUserBox(0), width=10)
 btn0.grid(row=5, column=1, sticky=W+E)
-btnClockIn = Button(root, text="Clock In", width=10)
+btnClockIn = Button(root, text="Clock In", command= lambda: retrieve_input(), width=10)
 btnClockIn.grid(row=7, column=1, sticky=W+E)
 btnClockOut = Button(root, text="Clock Out", width=10)
 btnClockOut.grid(row=8, column=1, sticky=W+E)
+
+
+# text_update = Text(root, height=2, width=26)
+# text_update.grid(row=9, columnspan=5, sticky=W+E)
 root.mainloop()
 
