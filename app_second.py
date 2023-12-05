@@ -39,9 +39,11 @@ class Employee:
             self.clocked_in = False
             c.execute("SELECT HoursWorked FROM employees WHERE UserID=?",(self._id,))
             currentHours=float(c.fetchone()[0])
-            currentHours+=float(self.clockedtime)-(self.clocktime)
-            
-            editUserHours(self._id,(currentHours)/60)
+
+            addedHours=((float(self.clockedtime)-(self.clocktime)))/60            
+            newHours = currentHours+addedHours
+           
+            editUserHours(self._id,(newHours))
             
         else:
             print("You were not Clocked in")
@@ -58,6 +60,7 @@ class Employee:
     def viewUserDetails(self):
         c.execute("SELECT HoursWorked FROM employees WHERE UserID=?",(self._id,))
         currentHours=c.fetchone()[0]
+    
         c.execute("SELECT Pay FROM employees WHERE UserID=?",(self._id,))
         pay=c.fetchone()[0]
 
