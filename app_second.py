@@ -24,6 +24,7 @@ class Employee:
                 print("-"*10)
                 print("EMPLOYEE ID IS TAKEN")
                 print("-"*10)
+                
             else:
                 c.execute("INSERT INTO employees VALUES (?,?,?,?)",(self._id,self.name,pay,0))
 
@@ -33,7 +34,7 @@ class Employee:
             current_time = now.strftime("%H:%M:%S")
             print("Thanks",self.name, "\nClock in Time:", current_time)
             self.clock_in_time = current_time
-            self.clocktime=now.timestamp()
+            self.clocktime=round(now.timestamp(),2)
             self.clocked_in = True
 
         else:
@@ -41,16 +42,19 @@ class Employee:
 
     def clock_out(self):
         if self.clocked_in == True:
+            
             now = datetime.now()
+            self.clockedtime = round(now.timestamp(),2)
+            addedHours=round(((float(self.clockedtime)-(self.clocktime))))
             current_time = now.strftime("%H:%M:%S")
             print("Thanks", self.name, "\nClock Out Time: ", current_time)
             self.clock_out_time = current_time
-            self.clockedtime = now.timestamp()
+            
             self.clocked_in = False
             c.execute("SELECT HoursWorked FROM employees WHERE UserID=?",(self._id,))
             currentHours=float(c.fetchone()[0])
 
-            addedHours=((float(self.clockedtime)-(self.clocktime)))/60            
+                 
             newHours = currentHours+addedHours
            
             editUserHours(self._id,(newHours))
@@ -102,6 +106,7 @@ class Manager(Employee):
                 print("-"*10)
                 print("Employee not found - Please try again")
                 print("-"*10)
+                return False
 
 
     def get_employee_name_by_id(self, emp_id):
@@ -160,6 +165,7 @@ class Manager(Employee):
             print("-"*10)
             print("EMPLOYEE ID IS TAKEN")
             print("-"*10)
+            
         else:
             name=input("input employee name:")
             pay=input("Input employees pay:")
