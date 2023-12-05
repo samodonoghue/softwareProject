@@ -170,14 +170,14 @@ class Manager(Employee):
 
 
 base_manager = Manager("0000","BaseManager")
-bryan = Manager("4321","Bryan")
+sam = Manager("4321","Sam")
 
 
-sam = Employee("1234", "Sam", "Staff")
-sam.clock_in()
-sam.clock_out()
+# sam = Employee("1234", "Bryan", "Staff")
+# sam.clock_in()
+# sam.clock_out()
 
-bryan.view_all_employees()
+# .view_all_employees()
 
 def login():
     input_id = input("What is your Employee ID:")
